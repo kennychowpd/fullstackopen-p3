@@ -1,8 +1,12 @@
 const express = require('express')
 const morgan = require('morgan')
-
+const cors = require('cors')
 
 const app = express()
+
+app.use(express.static('build'))
+app.use(express.json())
+app.use(cors())
 
 const requestLogger = (tokens, req, res) => {
   console.log(req.body)
@@ -18,7 +22,6 @@ const requestLogger = (tokens, req, res) => {
 
 app.use(morgan(requestLogger));
 
-app.use(express.json())
 
 
 let persons = [
