@@ -1,6 +1,7 @@
 const express = require('express')
 const morgan = require('morgan')
 
+
 const app = express()
 
 const requestLogger = (tokens, req, res) => {
@@ -69,6 +70,7 @@ app.delete("/api/persons/:id", (req, res) => {
 })
 app.post("/api/persons", (req, res) => {
   const body = req.body
+  console.log(body)
 
   if (!body.name) {
     return res.status(400).json({ error: "content missing" })
