@@ -5,6 +5,7 @@ const cors = require('cors')
 const app = express()
 const Person = require('./models/person')
 
+
 app.use(cors())
 app.use(express.static('build'))
 app.use(express.json())
@@ -52,8 +53,12 @@ app.get('/api/persons/:id', (req, res) => {
 })
 
 app.get('/info', (req, res) => {
-  const date = new Date()
-  res.send(`<p>Phonebook has info for ${Person.length} people</p><p>${date}</p>`)
+
+  Person.find({}).then(persons => {
+    const date = new Date()
+    res.send(`<p>Phonebook has info for ${persons.length} people</p><p>${date}</p>`)
+  })
+
 })
 
 app.delete('/api/persons/:id', (req, res, next) => {
