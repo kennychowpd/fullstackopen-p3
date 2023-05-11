@@ -10,7 +10,6 @@ app.use(express.static('build'))
 app.use(express.json())
 
 const requestLogger = (tokens, req, res) => {
-  console.log(req.body)
   return [
     tokens.method(req, res),
     tokens.url(req, res),
@@ -22,10 +21,13 @@ const requestLogger = (tokens, req, res) => {
 }
 
 const errorHandler = (err, req, res, next) => {
-  console.error(err.message)
+  console.error(111111, err.message)
 
   if (err.name === 'CastError') {
-    return res.status(400).send({ err: 'malformatted id' })
+    return res.status(400).send({ error: 'malformatted id' })
+  } else if (err.name === "ValidationError") {
+    console.log(321312312321)
+    return res.status(400).send({ error: err.message })
   }
   next(err)
 }
@@ -61,13 +63,13 @@ app.delete("/api/persons/:id", (req, res, next) => {
     .catch(err => next(err))
 })
 
-app.post("/api/persons", (req, res) => {
+app.post("/api/persons", (req, res ,next) => {
   const body = req.body
-  console.log(body)
+
 
   if (!body.name) {
     console.log("missing name")
-    return res.status(400).json({ error: "content missing" })
+    return res.status(400).json({ error: "name missing" })
   }
 
   if (!body.number) {
@@ -75,20 +77,19 @@ app.post("/api/persons", (req, res) => {
     return res.status(400).json({ error: "number missing" })
   }
 
-  Person.findOne({ name: body.name })
-    .then(result => {
-      console.log("same name exists")
-      res.status(409).json({ error: "name already exist in the server" })
-    })
-
   const person = new Person({
     name: body.name,
     number: body.number
   })
-
-  person.save().then(savedPerson => {
-    res.json(savedPerson)
-  })
+  console.log("!!!!!!!!!!!!!!!!!!!CAUGHT!!!!!!!!!!!!")
+  console.log("!!!!!!!!!!!!!!!!!!!CAUGHT!!!!!!!!!!!!")
+  console.log("!!!!!!!!!!!!!!!!!!!CAUGHT!!!!!!!!!!!!")
+  console.log("!!!!!!!!!!!!!!!!!!!CAUGHT!!!!!!!!!!!!")
+  person.save()
+    .then(savedPerson => {
+      res.json(savedPerson)
+    })
+    .catch(err => next(err))
 })
 
 app.put("/api/persons/:id", (req, res, next) => {
