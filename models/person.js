@@ -1,4 +1,4 @@
-require("dotenv").config()
+require('dotenv').config()
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
@@ -9,6 +9,7 @@ console.log('connecting to', url)
 
 mongoose.connect(url)
   .then(result => {
+    console.log(result)
     console.log('connected to', url)
   })
   .catch((err) => {
@@ -28,12 +29,12 @@ const personSchema = new mongoose.Schema({
     validate: {
       validator: function (value) {
         return /^\d{2,3}-\d+$/.test(value)
-    },
-    message: props => (`${props.value} is not a valid phone number!`)
+      },
+      message: props => (`${props.value} is not a valid phone number!`)
     },
 
   }
-  
+
 })
 
 personSchema.set('toJSON', {
@@ -44,4 +45,4 @@ personSchema.set('toJSON', {
   }
 })
 
-module.exports = mongoose.model("Person", personSchema)
+module.exports = mongoose.model('Person', personSchema)

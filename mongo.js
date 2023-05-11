@@ -1,4 +1,4 @@
-require("dotenv").config()
+require('dotenv').config()
 const mongoose = require('mongoose')
 const url = process.env.MONGODB_URL
 
@@ -35,6 +35,7 @@ const person = new Person({
 })
 
 person.save().then(result => {
+  console.log(result)
   console.log(`added ${name} number ${number} to phonebook`)
   mongoose.connection.close()
 })
